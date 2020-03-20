@@ -1,6 +1,7 @@
 // const mongoose = require('mongoose');
 // const Recipe = mongoose.model('Recipe');
 const axios = require("axios");
+const {generateToken} = require("../helper/jwt")
 
 
 class FoodController{
