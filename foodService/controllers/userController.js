@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 const User = require("../models/User");
 const { OAuth2Client } = require("google-auth-library");
+=======
+const User = require('../models/User')
+const {generateToken} = require('../helper/jwt')
+const {OAuth2Client} = require('google-auth-library')
+>>>>>>> uncomment feature
 
 class userController {
   static loginGoogle(req, res, next) {
