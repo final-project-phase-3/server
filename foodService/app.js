@@ -6,6 +6,7 @@ if (
   require("dotenv").config();
 }
 
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -19,7 +20,8 @@ app.use(express.urlencoded({ extended: false }));
 
 const mongoUrl = {
   test: "mongodb://localhost:27017/foodTest",
-  development: "mongodb://localhost:27017/foodDev"
+  development: "mongodb://localhost:27017/foodDev",
+  // development: `mongodb://${process.end.MONGO_ID}:${process.end.MONGO_PASS}@localhost:27017/?authMechanism=DEFAULT`
 };
 
 mongoose
@@ -31,7 +33,6 @@ mongoose
   .then(() => {
     console.log(`connected to database ${mongoUrl[process.env.NODE_ENV]}`);
   });
-
 app.use("/", routes);
 
 app.listen(PORT, () => {
