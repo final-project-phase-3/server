@@ -20,8 +20,13 @@ app.use(express.urlencoded({ extended: false }));
 
 const mongoUrl = {
   test: "mongodb://localhost:27017/foodTest",
+<<<<<<< HEAD
   development: "mongodb://localhost:27017/foodDev"
   // development: `mongodb://${process.end.MONGO_ID}:${process.end.MONGO_PASS}@localhost:27017/?authMechanism=DEFAULT`
+=======
+  // development: "mongodb://localhost:27017/foodDev",
+  development: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodDev?authMechanism=DEFAULT&authSource=admin`
+>>>>>>> uncomment feature
 };
 
 mongoose
