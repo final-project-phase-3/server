@@ -1,5 +1,3 @@
-// const mongoose = require('mongoose');
-// const Recipe = mongoose.model('Recipe');
 const axios = require("axios");
 
 class FoodController{
@@ -35,21 +33,35 @@ class FoodController{
         return Promise.all(promiseRecipes)
       })
       .then(steprecipe => {
-        for (let i = 0; i < steprecipe.length; i++) {
-          combinedRecipesData[i].cookingSteps = steprecipe[i].data[0].steps;
-        }
+        console.log("masuk",steprecipe.length,combinedRecipesData.length)
+        // if(steprecipe.length === 0){
+        //   for (let i = 0; i < combinedRecipesData.length; i++) {
+        //     combinedRecipesData[i].cookingSteps = [];
+        //   }
+        // }else{
+          for (let i = 0; i < steprecipe.length; i++) {
+            console.log(steprecipe[i],"step")
+            if(steprecipe[i].data.length === 0){
+              combinedRecipesData[i].cookingSteps = [];
+            }else{
+              combinedRecipesData[i].cookingSteps = steprecipe[i].data[0].steps;
+            }
+          }
+        // }
+        console.log(combinedRecipesData,"withstep")
         return Promise.all(promiseNutritions)
       })
       .then(foodNutritions=>{
         for(let i = 0; i < foodNutritions.length; i++) {
+          console.log(foodNutritions[i],"nutri")
           combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
           combinedRecipesData[i].servingTime = foodNutritions[i].data.readyInMinutes
         }
-        console.log(combinedRecipesData);
+        console.log(combinedRecipesData,"<<<result");
         res.status(200).json({ payload: combinedRecipesData });
       })
       .catch(error => {
-        // console.log(error);
+        console.log("error");
         next(error);
       });
   }
