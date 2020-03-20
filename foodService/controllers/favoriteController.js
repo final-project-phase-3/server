@@ -1,5 +1,4 @@
 const Recipe = require("../models/Recipe");
-const axios = require("axios");
 
 class FavoriteController {
   static addToFav(req, res, next) {
@@ -28,6 +27,7 @@ class FavoriteController {
   }
 
   static removeFromFav(req, res, next) {
+    console.log(req.params);
     Recipe.findOneAndDelete({ idAPI: req.params.idAPI })
       .then(found => {
         if (found) {
