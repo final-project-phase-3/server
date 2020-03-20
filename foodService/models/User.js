@@ -19,8 +19,7 @@ const userSchema = new Schema({
       image_url: {
         type: String,
         required: [true, "Image Path of Ingredient is required"]
-      },
-      id: { type: String, required: [true, "Id of ingredient is required"] }
+      }
     }
   ]
 });
