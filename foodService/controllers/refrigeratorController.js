@@ -1,9 +1,13 @@
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 class RefrigeratorController {
   static addToRefrigerator(req, res, next) {
     User.findById(req.payload.id)
       .then(userFound => {
+        if (typeof req.payload.id === "string") {
+          req.payload.id = mongoose.Types.ObjectId(req.payload.id);
+        }
         let fridgeBaru = userFound.refrigerator;
         if (userFound.refrigerator.length === 0) {
           fridgeBaru = [req.body.ingredient];

@@ -13,6 +13,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 const routes = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
+const server = require("http").Server(app);
 
 app.use(cors());
 app.use(express.json());
@@ -20,8 +21,8 @@ app.use(express.urlencoded({ extended: false }));
 
 const mongoUrl = {
   test: "mongodb://localhost:27017/foodTest",
-  // development: "mongodb://localhost:27017/foodDev",
-  development: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodDev?authMechanism=DEFAULT&authSource=admin`
+  development: "mongodb://localhost:27017/foodDev"
+  // development: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodDev?authMechanism=DEFAULT&authSource=admin`
 };
 
 mongoose
@@ -36,6 +37,10 @@ mongoose
 app.use("/", routes);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`connected to port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  server.listen(PORT, () => {
+    console.log(`connected to port ${PORT}`);
+  });
+}
+
+module.exports = app;
