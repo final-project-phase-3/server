@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest --forceExit",
+    "test": "NODE_ENV=test jest --verbose --watch --forceExit",
     "dev": "NODE_ENV=development nodemon app.js"
   },
   "repository": {
@@ -29,6 +29,7 @@
     "mongoose": "^5.9.5"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.1.3",
     "jest": "^25.1.0",
     "supertest": "^4.0.2"
   }

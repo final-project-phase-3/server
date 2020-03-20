@@ -47,7 +47,7 @@ class FavoriteController {
   static getMyFavs(req, res, next) {
     Recipe.find({ userId: req.payload.id })
       .then(allFavorites => {
-        res.status(201).json(allFavorites);
+        res.status(200).json(allFavorites);
       })
       .catch(err => {
         next(err);

@@ -8,10 +8,10 @@ function authentication(req, res, next) {
       req.payload = payload;
       next();
     } catch (error) {
-      res.status(401).json({ error, message: "failed to authenticate" });
+      next({ status: 401, error, message: "Failed to authenticate" });
     }
   } else {
-    res.status(403).json({ message: "Please login first" });
+    next({ status: 403, message: "Please login first" });
   }
 }
 

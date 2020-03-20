@@ -13,6 +13,7 @@ const cors = require("cors");
 const PORT = process.env.PORT || 3001;
 const routes = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
+const server = require("http").Server(app);
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,10 @@ mongoose
 app.use("/", routes);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`connected to port ${PORT}`);
-});
+if (process.env.NODE_ENV !== "test") {
+  server.listen(PORT, () => {
+    console.log(`connected to port ${PORT}`);
+  });
+}
+
+module.exports = app;
