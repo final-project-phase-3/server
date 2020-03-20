@@ -1,7 +1,7 @@
 const User = require('../models/User')
 const {generateToken} = require('../helper/jwt')
 const {OAuth2Client} = require('google-auth-library')
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 
 class userController {
   static loginGoogle(req, res, next) {
@@ -63,14 +63,8 @@ class userController {
   }
   static createTestToken(req,res,next){
     const { id } = req.body
-    User
-      .findById(mongoose.Types.ObjectId(id))
-      .then(user => {
-        console.log(user)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    let token = generateToken({id:mongoose.Types.ObjectId(id)}, process.env.JWT_SECRET);
+    res.status(200).json({token})
   }
 }
 

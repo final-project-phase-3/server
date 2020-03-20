@@ -7,7 +7,7 @@ class ProcessImageController {
     const id = req.payload.id
     const { imageBase64} = req.body
     try {
-      const response = await User.findById(mongoose.Types.ObjectId(id))
+      const response = await User.findById(id)
       const total = response.refrigerator.length + 1
       if(!imageBase64){
         const err = {

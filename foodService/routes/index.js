@@ -5,6 +5,7 @@ const favoriteRoute = require("./favorite");
 const refrigeratorRoute = require("./refrigerator");
 const processImage = require("./processImage")
 
+
 routes.use("/user", userRoute);
 routes.use("/food", foodRoute);
 routes.use("/favorites", favoriteRoute);
