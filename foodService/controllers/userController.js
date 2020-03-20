@@ -51,6 +51,16 @@ class userController {
         next(error);
       });
   }
+
+  static getUser(req, res, next) {
+    User.findById(req.payload.id)
+      .then(user => {
+        res.status(200).json(user);
+      })
+      .catch(err => {
+        next(err);
+      });
+  }
 }
 
 module.exports = userController;
