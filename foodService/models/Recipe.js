@@ -6,12 +6,45 @@ const recipeSchema = new Schema({
     type: String,
     required: [true, "name of recipe is required"]
   },
-  cook_time: {
+  servingTime: {
     type: String
   },
-  nutrition: {
-    type: Map,
-    of: String
+  nutrition: [
+    {
+      title: String,
+      amount: Number,
+      unit: String,
+      percentOfDailyNeeds: Number
+    }
+  ],
+  image_url_recipe: {
+    type: String
+  },
+  idAPI: {
+    type: String,
+    required: [true, "id of recipe is required"]
+  },
+  cookingSteps: [
+    {
+      number: Number,
+      step: String,
+      ingredients: [
+        {
+          id: Number,
+          name: String
+        }
+      ],
+      equipment: [
+        {
+          id: Number,
+          name: String
+        }
+      ]
+    }
+  ],
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 
