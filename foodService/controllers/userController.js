@@ -1,6 +1,7 @@
-const User = require("../models/User");
-const { OAuth2Client } = require("google-auth-library");
-const { generateToken } = require("../helper/jwt");
+const User = require('../models/User')
+const {generateToken} = require('../helper/jwt')
+const {OAuth2Client} = require('google-auth-library')
+const mongoose = require('mongoose');
 
 class userController {
   static loginGoogle(req, res, next) {
@@ -47,7 +48,6 @@ class userController {
         }
       })
       .catch(error => {
-        console.error;
         next(error);
       });
   }
@@ -60,6 +60,11 @@ class userController {
       .catch(err => {
         next(err);
       });
+  }
+  static createTestToken(req,res,next){
+    const { id } = req.body
+    let token = generateToken({id:mongoose.Types.ObjectId(id)}, process.env.JWT_SECRET);
+    res.status(200).json({token})
   }
 }
 
