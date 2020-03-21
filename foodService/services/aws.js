@@ -1,8 +1,6 @@
 const AWS = require('aws-sdk')
 AWS.config.update({
-  accessKeyId:"AKIAINC64PXWMIXNY43Q",
-  secretAccessKey:"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",
-  region: 'ap-southeast-1'
+  
 })
 const s3Bucket = new AWS.S3( { params: {Bucket: 'ingredientimages'} } )
 
