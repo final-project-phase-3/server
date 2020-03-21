@@ -1,14 +1,13 @@
 const User = require('../models/User')
 const {generateToken} = require('../helper/jwt')
 const {OAuth2Client} = require('google-auth-library')
-const mongoose = require('mongoose');
 
 class userController {
   static loginGoogle(req, res, next) {
     console.log("login");
     const client = new OAuth2Client(process.env.CLIENT_ID);
     console.log(client, "<<<");
-    let name;
+    let username;
     let email;
     async function verify() {
       const ticket = await client.verifyIdToken({
@@ -37,7 +36,7 @@ class userController {
         } else {
           console.log("ada");
           let obj = {
-            id: exists.id,
+            id: exists._id,
             username: exists.username,
             email: exists.email,
             refrigerator: exists.refrigerator
