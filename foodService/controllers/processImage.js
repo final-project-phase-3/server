@@ -19,7 +19,11 @@ class ProcessImageController {
   
       awsUpload(`${id}-${total}`,imageBase64,(err,data) => {
         if(err){
-          next(err)
+          const errMsg = {
+            status:400,
+            message:"id/base64 missing"
+          }
+          next(errMsg)
         }
   
         const payload = {
