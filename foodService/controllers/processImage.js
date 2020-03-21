@@ -1,40 +1,9 @@
-const awsUpload = require("../services/aws")
 const axios = require("axios")
-const User = require("../models/User")
 
 class ProcessImageController {
   static async uploadImage(req,res,next){
-    const id = req.payload.id
-    const { imageBase64} = req.body
-    try {
-      const response = await User.findById(id)
-      const total = response.refrigerator.length + 1
-      if(!imageBase64){
-        const err = {
-          status:400,
-          message:"id/base64 missing"
-        }
-        next(err)
-      }
-  
-      awsUpload(`${id}-${total}`,imageBase64,(err,data) => {
-        if(err){
-          const errMsg = {
-            status:400,
-            message:"id/base64 missing"
-          }
-          next(errMsg)
-        }
-  
-        const payload = {
-          imageUrl:`https://ingredientimages.s3-ap-southeast-1.amazonaws.com/${id}-${total}`
-        }
-  
-        res.status(200).json(payload)
-      })  
-    } catch (error) {
-      next(error)
-    }
+    
+    res.status(200).json({imageUrl:req.body.image})
   }
 
   static  ocrImage(req,res,next){
