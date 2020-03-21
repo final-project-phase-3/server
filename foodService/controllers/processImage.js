@@ -1,7 +1,7 @@
 const awsUpload = require("../services/aws")
 const axios = require("axios")
 const User = require("../models/User")
-const mongoose = require('mongoose');
+
 class ProcessImageController {
   static async uploadImage(req,res,next){
     const id = req.payload.id
@@ -51,11 +51,12 @@ class ProcessImageController {
       }
     }
 
-    const url = 'https://api.imagga.com/v2/tags?limit=1&&image_url='+encodeURIComponent(imageUrl)
+    const url = 'https://api.imagga.com/v2/tags?verbose=1&&limit=1&&image_url='+encodeURIComponent(imageUrl)
     axios
       .get(url,auth)
       .then(({ data }) => {
-        if(data.status.type === 'success' || data.results.tags === 0){
+        console.log(data)
+        if((data.status.type === 'success' || data.results.tags === 0) && data.result.tags[0].confidence > 50){
           res.status(200).json({name: data.result.tags[0].tag.en})
         }else{
           const err = {
