@@ -1,6 +1,9 @@
 const AWS = require('aws-sdk')
+require("dotenv").config();
 AWS.config.update({
-  
+  accessKeyId:process.env.AWS_KEY_ID,
+  secretAccessKey:process.env.AWS_SECRET_KEY,
+  region: 'ap-southeast-1'
 })
 const s3Bucket = new AWS.S3( { params: {Bucket: 'ingredientimages'} } )
 
