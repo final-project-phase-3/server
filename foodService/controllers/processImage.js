@@ -28,8 +28,7 @@ class ProcessImageController {
     axios
       .get(url,auth)
       .then(({ data }) => {
-        console.log(data)
-        if((data.status.type === 'success' || data.results.tags === 0) && data.result.tags[0].confidence > 50){
+        if((data.status.type === 'success' || data.results.tags === 0)){
           res.status(200).json({name: data.result.tags[0].tag.en})
         }else{
           const err = {

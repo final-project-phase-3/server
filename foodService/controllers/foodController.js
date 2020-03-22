@@ -6,7 +6,7 @@ class FoodController{
     const combinedRecipesData = []
     const promiseRecipes = []
     const promiseNutritions = []
-    console.log(req.body)
+    // console.log(req.body)
     const combineIngridients = req.body.data.join(",+")
     // console.log(combineIngridients)
     axios({
@@ -15,7 +15,7 @@ class FoodController{
     })
       .then(resp=>{
         for(let i = 0; i < resp.data.length; i++) {
-          console.log(resp.data[i])
+          // console.log(resp.data[i])
           combinedRecipesData.push(resp.data[i])
           promiseRecipes.push(
             axios({
@@ -33,7 +33,7 @@ class FoodController{
         return Promise.all(promiseRecipes)
       })
       .then(steprecipe => {
-        console.log("masuk",steprecipe.length,combinedRecipesData.length)
+        // console.log("masuk",steprecipe.length,combinedRecipesData.length)
         for (let i = 0; i < steprecipe.length; i++) {
           // console.log(steprecipe[i],"step")
           if(steprecipe[i].data.length === 0){
@@ -55,12 +55,12 @@ class FoodController{
         res.status(200).json({ payload: combinedRecipesData });
       })
       .catch(error => {
-        console.log("error");
+        // console.log("error");
         next(error);
       });
   }
   static searchRecipe(req,res,next) {
-    console.log(req.body.data)
+    // console.log(req.body.data)
     const combinedRecipesData = []
     const promiseRecipes = []
     const promiseNutritions = []
@@ -88,19 +88,19 @@ class FoodController{
           );
         }
         return Promise.all(promiseRecipes)
-        console.log(combinedRecipesData)
+        // console.log(combinedRecipesData)
       })
       .then(steprecipe => {
-        console.log("masuk",steprecipe.length,combinedRecipesData.length)
+        // console.log("masuk",steprecipe.length,combinedRecipesData.length)
         for (let i = 0; i < steprecipe.length; i++) {
-          console.log(steprecipe[i],"step")
+          // console.log(steprecipe[i],"step")
           if(steprecipe[i].data.length === 0){
             combinedRecipesData[i].cookingSteps = [];
           }else{
             combinedRecipesData[i].cookingSteps = steprecipe[i].data[0].steps;
           }
         }
-        console.log(combinedRecipesData,"withstep")
+        // console.log(combinedRecipesData,"withstep")
         return Promise.all(promiseNutritions)
       })
       .then(foodNutritions=>{
@@ -110,11 +110,11 @@ class FoodController{
           combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
           combinedRecipesData[i].ingredients = foodNutritions[i].data.extendedIngredients          
         }
-        console.log(combinedRecipesData,"<<<result");
+        // console.log(combinedRecipesData,"<<<result");
         res.status(200).json({ payload: combinedRecipesData });
       })
       .catch(error=>{
-        console.log(error)
+        // console.log(error)
         next(error)
       })
   }

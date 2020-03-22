@@ -39,6 +39,7 @@ app.use("/", routes);
 app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "test") {
+  /* istanbul ignore next */
   server.listen(PORT, () => {
     console.log(`connected to port ${PORT}`);
   });

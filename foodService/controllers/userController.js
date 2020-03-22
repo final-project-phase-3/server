@@ -60,6 +60,7 @@ class userController {
         next(err);
       });
   }
+  /* istanbul ignore next */
   static createTestToken(req,res,next){
     const { id } = req.body
     let token = generateToken({id:mongoose.Types.ObjectId(id)}, process.env.JWT_SECRET);
