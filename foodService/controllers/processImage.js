@@ -1,5 +1,5 @@
 const axios = require("axios")
-
+const textApi = require('../services/aylien')
 class ProcessImageController {
   static async uploadImage(req,res,next){
     
@@ -8,6 +8,7 @@ class ProcessImageController {
 
   static  ocrImage(req,res,next){
     const { imageUrl } = req.body
+    const fileName = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
     
     if(!imageUrl){
       const err = {
@@ -16,6 +17,7 @@ class ProcessImageController {
       }
       next(err)
     }
+    const sharpenImage = `https://coolkas.imgix.net/${fileName}?sharp=100?dpr=0.5`
 
     const auth = {
       auth:{
@@ -24,19 +26,55 @@ class ProcessImageController {
       }
     }
 
-    const url = 'https://api.imagga.com/v2/tags?verbose=1&&limit=1&&image_url='+encodeURIComponent(imageUrl)
+    const url = 'https://api.imagga.com/v2/tags?limit=5&&image_url='+encodeURIComponent(sharpenImage)
     axios
       .get(url,auth)
       .then(({ data }) => {
-        if((data.status.type === 'success' || data.results.tags === 0)){
-          res.status(200).json({name: data.result.tags[0].tag.en})
-        }else{
-          const err = {
-            status:400,
-            message:"can't read your image"
-          }
-          next(err)
+        let arrayTag = []
+        console.log(data)
+        for (let i = 0; i < data.result.tags.length;i++){
+          arrayTag.push(data.result.tags[i].tag.en)
         }
+        textApi.concepts({
+          text:String(arrayTag),
+          language:"en"
+        },(error,response) => {
+          console.log(arrayTag)
+          if (error === null) {
+            let arrayKey = Object.keys(response.concepts)
+            let concept = arrayKey[0]
+            let surfaceForms = response.concepts[concept].surfaceForms.map(function(sf) {
+              return sf['string'];
+            });
+            textApi.hashtags({
+              text:String(arrayTag),
+              language:"en"
+            },((err,resp) => {
+              let tags = resp.hashtags.map(sf => {
+                return sf.slice(1)
+              })
+              res.status(200).json({
+                imageUrl,
+                concept: concept.substring(concept.lastIndexOf('/')+1),
+                name: surfaceForms[0],
+                tags: tags,
+                msg: "Success"
+              })
+            }))
+          }else {
+            next(error)
+          }
+        })
+        // if((data.status.type === 'success' || data.result.tags.length === 0)){
+        //   res.json(data.result.tags)
+        //   // res.status(200).json({name: data.result.tags[0].tag.en})
+        // }else{
+        //   const err = {
+        //     status:400,
+        //     message:"can't read your image"
+        //   }
+        //   next(err)
+        // }
       })
       .catch(err => {
         next(err)
