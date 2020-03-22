@@ -4,6 +4,7 @@ const ingredients =[
   "potato",
   "carrot"
 ]
+const query = "potato"
 
 
 describe("Food routes", () => {
@@ -28,7 +29,7 @@ describe("Food routes", () => {
     it("should return status code 200 when get the data from API", async () => {
       const result = await request(app)
       .post("/food/searchRecipe")
-      .send({ data: ingredients });
+      .send({ data: query });
       // console.log(result, "res");
       expect(result.status).toBe(200);
       expect(typeof result.body).toBe("object");
