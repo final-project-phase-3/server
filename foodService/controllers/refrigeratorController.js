@@ -34,7 +34,9 @@ class RefrigeratorController {
       .then(userFound => {
         let fridge = userFound.refrigerator;
         let fridgeBaru = fridge.filter(el => {
-          return String(el._id) !== req.params.id;
+          if (el !== null) {
+            return String(el._id) !== req.params.id;
+          }
         });
         return User.findByIdAndUpdate(
           req.payload.id,
