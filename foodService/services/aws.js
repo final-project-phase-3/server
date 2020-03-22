@@ -11,15 +11,13 @@ const storage = unggah.s3({
   secretAccessKey: process.env.AWS_SECRET_KEY,
   bucketName: 'ingredientimages',
   rename: (req, file) => {
+    /* istanbul ignore next */
     return `${Date.now()}-${file.originalname}`  // this is the default
   }
 })
 // const s3Bucket = new AWS.S3( { params: {Bucket: 'ingredientimages'} } )
 
 const upload = unggah({
-  limits: {
-    fileSize: 1e6 // in bytes
-  },
   storage: storage
 })
 // function uploadImage(name,imageBase64,cb){

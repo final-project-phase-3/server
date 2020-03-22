@@ -130,6 +130,7 @@ describe("Favorite route", () => {
       expect(result.body[0]).toHaveProperty("userId");
       expect(result.body[0]).toHaveProperty("servingTime");
     });
+
     it("Should return status code 403 when token is not set", async () => {
       const result = await request(app).get("/favorites");
       expect(result.status).toBe(403);

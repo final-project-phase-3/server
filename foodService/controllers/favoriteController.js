@@ -50,6 +50,7 @@ class FavoriteController {
         res.status(200).json(allFavorites);
       })
       .catch(err => {
+        /* istanbul ignore next */
         next(err);
       });
   }

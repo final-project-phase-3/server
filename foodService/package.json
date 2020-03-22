@@ -7,6 +7,9 @@
     "test": "NODE_ENV=test jest --verbose --watchAll --forceExit",
     "dev": "NODE_ENV=development nodemon app.js"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/final-project-phase-3/server.git"
