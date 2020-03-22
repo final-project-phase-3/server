@@ -3,10 +3,9 @@ const {generateToken} = require('../helper/jwt')
 const {OAuth2Client} = require('google-auth-library')
 
 class userController {
+  /* istanbul ignore next */
   static loginGoogle(req, res, next) {
-    console.log("login");
     const client = new OAuth2Client(process.env.CLIENT_ID);
-    console.log(client, "<<<");
     let username;
     let email;
     async function verify() {
@@ -19,7 +18,6 @@ class userController {
     }
     verify()
       .then(data => {
-        console.log(data);
         username = data.name;
         email = data.email;
         return User.findOne({
@@ -34,7 +32,6 @@ class userController {
             refrigerator: []
           });
         } else {
-          console.log("ada");
           let obj = {
             id: exists._id,
             username: exists.username,
@@ -42,7 +39,6 @@ class userController {
             refrigerator: exists.refrigerator
           };
           let token = generateToken(obj, process.env.JWT_SECRET);
-          console.log(token, "<<");
           res.status(200).json({ accessToken: token });
         }
       })
