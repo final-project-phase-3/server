@@ -62,22 +62,25 @@ class ProcessImageController {
               })
             }))
           }else {
+            const error = {
+              status:400,
+              message:"can't read your image"
+            }
             next(error)
           }
         })
         // if((data.status.type === 'success' || data.result.tags.length === 0)){
-        //   res.json(data.result.tags)
+          //   res.json(data.result.tags)
         //   // res.status(200).json({name: data.result.tags[0].tag.en})
         // }else{
-        //   const err = {
-        //     status:400,
-        //     message:"can't read your image"
-        //   }
-        //   next(err)
-        // }
-      })
-      .catch(err => {
-        next(err)
+          // }
+        })
+        .catch(err => {
+          const error = {
+            status:400,
+            message:"can't read your image"
+          }
+          next(error)
       })
   }
 }
