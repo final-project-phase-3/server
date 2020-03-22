@@ -55,7 +55,7 @@ describe("Process image route", () => {
           imageUrl: "https://api.time.com/wp-content/uploads/2019/11/gettyimages-459761948.jpg?quality=85&crop=0px%2C74px%2C1024px%2C536px&resize=1200%2C628&strip"
         })
         console.log(result.body)
-      expect(typeof result.body).tobe("object")
+      expect(typeof result.body).toBe("object")
     });
 
     it("should return status code 400", async () => {
@@ -64,7 +64,7 @@ describe("Process image route", () => {
         .get("/processImage")
         .set("token",token)
       expect(result.status).toBe(400);
-      expect(typeof result.body).tobe("object")
+      expect(typeof result.body).toBe("object")
     });
   })
 })
