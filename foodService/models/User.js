@@ -19,6 +19,9 @@ const userSchema = new Schema({
       image_url: {
         type: String,
         required: [true, "Image Path of Ingredient is required"]
+      },
+      tags: {
+        type: Array
       }
     }
   ]
