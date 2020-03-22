@@ -23,7 +23,7 @@ describe("Food routes", () => {
       expect(result.body.payload[0]).toHaveProperty("missedIngredients");
       expect(result.body.payload[0]).toHaveProperty("readyInMinutes");
       expect(result.body.payload[0]).toHaveProperty("nutritions");
-    },10000);
+    },15000);
   });
   describe("POST /food/searchRecipe", () => {
     it("should return status code 200 when get the data from API", async () => {
@@ -39,6 +39,6 @@ describe("Food routes", () => {
       expect(result.body.payload[0]).toHaveProperty("ingredients");
       expect(result.body.payload[0]).toHaveProperty("readyInMinutes");
       expect(result.body.payload[0]).toHaveProperty("nutritions");
-    },10000);
+    },15000);
   });
 });
