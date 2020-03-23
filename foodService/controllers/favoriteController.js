@@ -9,7 +9,7 @@ class FavoriteController {
         } else {
           return Recipe.create({
             title: req.body.title,
-            servingTime: `${req.body.servingTime} minutes`,
+            readyInMinutes: req.body.readyInMinutes,
             cookingSteps: req.body.cookingSteps,
             userId: req.payload.id,
             idAPI: req.params.idAPI,

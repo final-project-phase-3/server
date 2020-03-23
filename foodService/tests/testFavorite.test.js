@@ -7,7 +7,7 @@ const Recipe = require("../models/Recipe");
 var recipe = {
   id: "14998",
   title: "rendang",
-  servingTime: "45",
+  readyInMinutes: 45,
   cookingSteps: [
     {
       number: 1,
@@ -54,14 +54,14 @@ describe("Favorite route", () => {
         .send({
           cookingSteps: recipe.cookingSteps,
           title: recipe.title,
-          servingTime: recipe.servingTime,
+          readyInMinutes: recipe.readyInMinutes,
           nutritions: recipe.nutritions
         });
       expect(typeof result).toBe("object");
       expect(result.status).toBe(201);
       expect(typeof result.body).toBe("object");
       expect(result.body.title).toBe("rendang");
-      expect(result.body.servingTime).toBe("45 minutes");
+      expect(result.body.readyInMinutes).toBe(45);
       expect(typeof result.body.cookingSteps).toBe("object");
       expect(result.body.cookingSteps[0].number).toBe(1);
       expect(result.body.cookingSteps[0]).toHaveProperty("equipment");
@@ -75,7 +75,7 @@ describe("Favorite route", () => {
         .send({
           cookingSteps: recipe.cookingSteps,
           title: recipe.title,
-          servingTime: recipe.servingTime,
+          readyInMinutes: recipe.readyInMinutes,
           nutritions: recipe.nutritions
         });
       expect(result.status).toBe(403);
@@ -91,7 +91,7 @@ describe("Favorite route", () => {
         .send({
           cookingSteps: recipe.cookingSteps,
           title: recipe.title,
-          servingTime: recipe.servingTime,
+          readyInMinutes: recipe.readyInMinutes,
           nutritions: recipe.nutritions
         });
       expect(result.status).toBe(400);
@@ -107,7 +107,7 @@ describe("Favorite route", () => {
         .set("token", token)
         .send({
           cookingSteps: recipe.cookingSteps,
-          servingTime: recipe.servingTime,
+          readyInMinutes: recipe.readyInMinutes,
           nutritions: recipe.nutritions
         });
       expect(result.status).toBe(500);
@@ -128,7 +128,7 @@ describe("Favorite route", () => {
       expect(result.status).toBe(200);
       expect(result.body[0]).toHaveProperty("cookingSteps");
       expect(result.body[0]).toHaveProperty("userId");
-      expect(result.body[0]).toHaveProperty("servingTime");
+      expect(result.body[0]).toHaveProperty("readyInMinutes");
     });
 
     it("Should return status code 403 when token is not set", async () => {
@@ -149,7 +149,6 @@ describe("Favorite route", () => {
       expect(typeof result.body).toBe("object");
       expect(typeof result.body).toBe("object");
       expect(result.body.title).toBe("rendang");
-      expect(result.body.servingTime).toBe("45 minutes");
       expect(typeof result.body.cookingSteps).toBe("object");
       expect(result.body.cookingSteps[0].number).toBe(1);
       expect(result.body.cookingSteps[0]).toHaveProperty("equipment");
