@@ -5,6 +5,9 @@ class RefrigeratorController {
   static addToRefrigerator(req, res, next) {
     User.findById(req.payload.id)
       .then(userFound => {
+        if (!req.body.ingredient.name) {
+          throw { status: 400, message: "Please input your ingredient" };
+        }
         if (typeof req.payload.id === "string") {
           req.payload.id = mongoose.Types.ObjectId(req.payload.id);
         }
@@ -38,6 +41,12 @@ class RefrigeratorController {
             return String(el._id) !== req.params.id;
           }
         });
+        if (fridge.length === fridgeBaru.length) {
+          throw {
+            status: 400,
+            message: "You don't have this ingredient on your refridgerator"
+          };
+        }
         return User.findByIdAndUpdate(
           req.payload.id,
           { refrigerator: fridgeBaru },
