@@ -2,11 +2,11 @@ const jwt = require("jsonwebtoken");
 
 function authentication(req, res, next) {
 
-  console.log("bbbbb",req.headers)
   if (req.headers.hasOwnProperty("token")) {
     const token = req.headers.token;
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
+      console.log("bbbbb",payload)
       req.payload = payload;
       next();
     } catch (error) {

@@ -48,11 +48,21 @@ class userController {
   }
 
   static getUser(req, res, next) {
+    console.log(req.payload)
     User.findById(req.payload.id)
       .then(user => {
-        res.status(200).json(user);
+        console.log(user)
+        if(user){
+          res.status(200).json(user);
+        }else{
+          throw {
+            status: 404,
+            message: "User Not Found"
+          }
+        }
       })
       .catch(err => {
+        console.log(err)
         next(err);
       });
   }
