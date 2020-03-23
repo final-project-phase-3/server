@@ -30,16 +30,24 @@ const recipeSchema = new Schema({
       step: String,
       ingredients: [
         {
-          id: Number,
           name: String
         }
       ],
       equipment: [
         {
-          id: Number,
           name: String
         }
       ]
+    }
+  ],
+  usedIngredients: [
+    {
+      name: String
+    }
+  ],
+  missedIngredients: [
+    {
+      name: String
     }
   ],
   userId: {
