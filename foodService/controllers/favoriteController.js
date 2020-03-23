@@ -14,7 +14,9 @@ class FavoriteController {
             userId: req.payload.id,
             idAPI: req.params.idAPI,
             image_url_recipe: req.body.image_url_recipe,
-            nutrition: req.body.nutrition
+            nutrition: req.body.nutrition,
+            missedIngredients: req.body.missedIngredients,
+            usedIngredients: req.body.usedIngredients
           });
         }
       })
