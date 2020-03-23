@@ -53,7 +53,13 @@ class FoodController{
           combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
           combinedRecipesData[i].readyInMinutes = foodNutritions[i].data.readyInMinutes
         }
-        // console.log(combinedRecipesData,"<<<result");
+        console.log(combinedRecipesData,"<<<result");
+        if(combinedRecipesData.length === 0){
+          throw {
+            status:404,
+            message:"Recipe Not Found"
+          }
+        }
         res.status(200).json({ payload: combinedRecipesData });
       })
       .catch(error => {
@@ -113,6 +119,12 @@ class FoodController{
           combinedRecipesData[i].ingredients = foodNutritions[i].data.extendedIngredients          
         }
         // console.log(combinedRecipesData,"<<<result");
+        if(combinedRecipesData.length === 0){
+          throw {
+            status:404,
+            message:"Recipe Not Found"
+          }
+        }
         res.status(200).json({ payload: combinedRecipesData });
       })
       .catch(error=>{

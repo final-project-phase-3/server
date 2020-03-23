@@ -7,9 +7,9 @@ class ProcessImageController {
   }
 
   static  ocrImage(req,res,next){
+
     const { imageUrl } = req.body
-    const fileName = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
-    
+    console.log(imageUrl,"aaaaaaaa")
     if(!imageUrl){
       const err = {
         status:400,
@@ -17,6 +17,7 @@ class ProcessImageController {
       }
       next(err)
     }
+    const fileName = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
     const sharpenImage = `https://coolkas.imgix.net/${fileName}?sharp=100?dpr=0.5`
 
     const auth = {

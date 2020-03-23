@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 function authentication(req, res, next) {
+
+  console.log("bbbbb",req.headers)
   if (req.headers.hasOwnProperty("token")) {
     const token = req.headers.token;
     try {
