@@ -45,7 +45,7 @@ beforeAll(() => {
     });
 });
 
-describe.only("Favorite route", () => {
+describe("Favorite route", () => {
   describe("POST /favorites/:idAPI", () => {
     it("should return status code 201 when favorite is added", async () => {
       const result = await request(app)
