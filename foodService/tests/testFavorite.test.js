@@ -6,7 +6,7 @@ const Recipe = require("../models/Recipe");
 
 var recipe = {
   id: "14998",
-  name: "rendang",
+  title: "rendang",
   servingTime: "45",
   cookingSteps: [
     {
@@ -25,7 +25,7 @@ var recipe = {
       ]
     }
   ],
-  nutrition: [
+  nutritions: [
     {
       title: "Calories",
       amount: 584.46,
@@ -45,7 +45,7 @@ beforeAll(() => {
     });
 });
 
-describe("Favorite route", () => {
+describe.only("Favorite route", () => {
   describe("POST /favorites/:idAPI", () => {
     it("should return status code 201 when favorite is added", async () => {
       const result = await request(app)
@@ -53,14 +53,14 @@ describe("Favorite route", () => {
         .set("token", token)
         .send({
           cookingSteps: recipe.cookingSteps,
-          name: recipe.name,
+          title: recipe.title,
           servingTime: recipe.servingTime,
-          nutrition: recipe.nutrition
+          nutritions: recipe.nutritions
         });
       expect(typeof result).toBe("object");
       expect(result.status).toBe(201);
       expect(typeof result.body).toBe("object");
-      expect(result.body.name).toBe("rendang");
+      expect(result.body.title).toBe("rendang");
       expect(result.body.servingTime).toBe("45 minutes");
       expect(typeof result.body.cookingSteps).toBe("object");
       expect(result.body.cookingSteps[0].number).toBe(1);
@@ -74,9 +74,9 @@ describe("Favorite route", () => {
         .post(`/favorites/${recipe.id}`)
         .send({
           cookingSteps: recipe.cookingSteps,
-          name: recipe.name,
+          title: recipe.title,
           servingTime: recipe.servingTime,
-          nutrition: recipe.nutrition
+          nutritions: recipe.nutritions
         });
       expect(result.status).toBe(403);
       expect(result.body).toHaveProperty("msg");
@@ -90,9 +90,9 @@ describe("Favorite route", () => {
         .set("token", token)
         .send({
           cookingSteps: recipe.cookingSteps,
-          name: recipe.name,
+          title: recipe.title,
           servingTime: recipe.servingTime,
-          nutrition: recipe.nutrition
+          nutritions: recipe.nutritions
         });
       expect(result.status).toBe(400);
       expect(typeof result.body).toBe("object");
@@ -108,14 +108,14 @@ describe("Favorite route", () => {
         .send({
           cookingSteps: recipe.cookingSteps,
           servingTime: recipe.servingTime,
-          nutrition: recipe.nutrition
+          nutritions: recipe.nutritions
         });
       expect(result.status).toBe(500);
       expect(typeof result.body).toBe("object");
       expect(result.body).toHaveProperty("msg");
       expect(typeof result.body.msg).toBe("string");
       expect(result.body.msg).toBe(
-        "Recipe validation failed: name: name of recipe is required"
+        "Recipe validation failed: title: title of recipe is required"
       );
     });
   });
@@ -148,7 +148,7 @@ describe("Favorite route", () => {
       expect(result.status).toBe(200);
       expect(typeof result.body).toBe("object");
       expect(typeof result.body).toBe("object");
-      expect(result.body.name).toBe("rendang");
+      expect(result.body.title).toBe("rendang");
       expect(result.body.servingTime).toBe("45 minutes");
       expect(typeof result.body.cookingSteps).toBe("object");
       expect(result.body.cookingSteps[0].number).toBe(1);

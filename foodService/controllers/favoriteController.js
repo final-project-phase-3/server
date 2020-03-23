@@ -8,13 +8,13 @@ class FavoriteController {
           throw { status: 400, message: "You have favorited this recipe" };
         } else {
           return Recipe.create({
-            name: req.body.name,
+            title: req.body.title,
             servingTime: `${req.body.servingTime} minutes`,
             cookingSteps: req.body.cookingSteps,
             userId: req.payload.id,
             idAPI: req.params.idAPI,
-            image_url_recipe: req.body.image_url_recipe,
-            nutrition: req.body.nutrition,
+            image: req.body.image,
+            nutritions: req.body.nutritions,
             missedIngredients: req.body.missedIngredients,
             usedIngredients: req.body.usedIngredients
           });

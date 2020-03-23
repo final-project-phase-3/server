@@ -2,14 +2,14 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const recipeSchema = new Schema({
-  name: {
+  title: {
     type: String,
-    required: [true, "name of recipe is required"]
+    required: [true, "title of recipe is required"]
   },
   servingTime: {
     type: String
   },
-  nutrition: [
+  nutritions: [
     {
       title: String,
       amount: Number,
@@ -17,7 +17,7 @@ const recipeSchema = new Schema({
       percentOfDailyNeeds: Number
     }
   ],
-  image_url_recipe: {
+  image: {
     type: String
   },
   idAPI: {
