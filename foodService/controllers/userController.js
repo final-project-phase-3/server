@@ -48,18 +48,28 @@ class userController {
   }
 
   static getUser(req, res, next) {
+    console.log(req.payload)
     User.findById(req.payload.id)
       .then(user => {
-        res.status(200).json(user);
+        console.log(user)
+        if(user){
+          res.status(200).json(user);
+        }else{
+          throw {
+            status: 404,
+            message: "User Not Found"
+          }
+        }
       })
       .catch(err => {
+        console.log(err)
         next(err);
       });
   }
   /* istanbul ignore next */
   static createTestToken(req,res,next){
     const { id } = req.body
-    let token = generateToken({id:mongoose.Types.ObjectId(id)}, process.env.JWT_SECRET);
+    let token = generateToken({id}, process.env.JWT_SECRET);
     res.status(200).json({token})
   }
 }

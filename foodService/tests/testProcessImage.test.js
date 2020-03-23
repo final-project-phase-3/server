@@ -56,10 +56,10 @@ describe("Process image route", () => {
         })
         console.log(result.body)
       expect(typeof result.body).toBe("object")
-    });
+    },10000);
 
-    it("should return status code 400", async () => {
-      // console.log(token, "AAAAAAAAAAAAAAAAAAAAAAA");
+    it("no imageUrl should return status code 400", async () => {
+      console.log("AAAAAAAAAAAAAAAAAAAAAAA");
       const result = await request(app)
         .get("/processImage")
         .set("token",token)
