@@ -6,8 +6,8 @@ const recipeSchema = new Schema({
     type: String,
     required: [true, "title of recipe is required"]
   },
-  servingTime: {
-    type: String
+  readyInMinutes: {
+    type: Number
   },
   nutritions: [
     {
