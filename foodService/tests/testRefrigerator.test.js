@@ -22,7 +22,7 @@ beforeAll(async () => {
 
 describe("Refrigerator routes", () => {
   describe("POST /refrigerator", () => {
-    it("should return status code 201 when ingredient is successfully added to the refrigerator", async () => {
+    it("should return status code 201 when ingredient is successfully added to the refrigerator when it's empty", async () => {
       // console.log(token, "AAAAAAAAAAAAAAAAAAAAAAA");
       const result = await request(app)
         .post("/refrigerator")
@@ -40,6 +40,36 @@ describe("Refrigerator routes", () => {
       expect(result.body.refrigerator[0]).toHaveProperty("name");
       // expect(result.body.ref).toBe(",");
       idToDelete = result.body.refrigerator[0]._id;
+    });
+    it("should return status code 201 when ingredient is successfully added to the refrigerator and the fridge is not empty", async () => {
+      // console.log(token, "AAAAAAAAAAAAAAAAAAAAAAA");
+      const result = await request(app)
+        .post("/refrigerator")
+        .set("token", token)
+        .send({ ingredient });
+      expect(result.status).toBe(201);
+      expect(typeof result.body).toBe("object");
+      expect(result.body).toHaveProperty("email");
+      expect(result.body).toHaveProperty("username");
+      expect(result.body).toHaveProperty("refrigerator");
+      expect(typeof result.body.refrigerator).toBe("object");
+      expect(result.body.email).toBe("kiki@mail.com");
+      expect(result.body.username).toBe("kiki");
+      expect(result.body.refrigerator.length).toBe(2);
+      expect(result.body.refrigerator[0]).toHaveProperty("image_url");
+      expect(result.body.refrigerator[0]).toHaveProperty("name");
+      // expect(result.body.ref).toBe(",");
+      idToDelete = result.body.refrigerator[0]._id;
+    });
+    it("should return status code 400 when ingredient name is not inputted", async () => {
+      const result = await request(app)
+        .post("/refrigerator")
+        .set("token", token)
+        .send({ ingredient: { image_url: "mama" } });
+      expect(result.status).toBe(400);
+      expect(result.body).toHaveProperty("msg");
+      expect(typeof result.body.msg).toBe("string");
+      expect(result.body.msg).toBe("Please input your ingredient");
     });
 
     it("should return status code 403 when token is not set", async () => {
@@ -59,7 +89,19 @@ describe("Refrigerator routes", () => {
         .delete(`/refrigerator/${idToDelete}`)
         .set("token", token);
       expect(result.status).toBe(200);
-      expect(result.body.refrigerator.length).toBe(0);
+      expect(result.body.refrigerator.length).toBe(1);
+    });
+    it("should return status code 400 when ingredient is not in the fridge", async () => {
+      const result = await request(app)
+        .delete("/refrigerator/101010")
+        .set("token", token)
+        .send({ ingredient: { image_url: "mama" } });
+      expect(result.status).toBe(400);
+      expect(result.body).toHaveProperty("msg");
+      expect(typeof result.body.msg).toBe("string");
+      expect(result.body.msg).toBe(
+        "You don't have this ingredient on your refridgerator"
+      );
     });
   });
 });
