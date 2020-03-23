@@ -42,12 +42,12 @@ const recipeSchema = new Schema({
   ],
   usedIngredients: [
     {
-      name: String
+      original: String
     }
   ],
   missedIngredients: [
     {
-      name: String
+      original: String
     }
   ],
   userId: {
