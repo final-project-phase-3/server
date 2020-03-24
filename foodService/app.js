@@ -20,8 +20,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const mongoUrl = {
-  test: "mongodb://localhost:27017/foodTest",
-  // test: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodTest?authMechanism=DEFAULT&authSource=admin`,
+  // test: "mongodb://localhost:27017/foodTest",
+  test: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodTest?authMechanism=DEFAULT&authSource=admin`,
   // development: "mongodb://localhost:27017/foodDev"
   development: `mongodb://${process.env.MONGO_ID}:${process.env.MONGO_PASS}@localhost:27017/foodDev?authMechanism=DEFAULT&authSource=admin`
 };

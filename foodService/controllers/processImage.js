@@ -1,6 +1,7 @@
 const axios = require("axios")
 const textApi = require('../services/aylien')
 const qs = require('qs')
+/* istanbul ignore next */
 class ProcessImageController {
   static async uploadImage(req,res,next){
     

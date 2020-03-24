@@ -46,13 +46,14 @@ describe("Food routes", () => {
       expect(result.body.payload[0]).toHaveProperty("missedIngredients");
       expect(result.body.payload[0]).toHaveProperty("readyInMinutes");
       expect(result.body.payload[0]).toHaveProperty("nutritions");
-    },15000);
+    },150000);
   });
   describe("POST /food/recipe", () => {
     it("should return status code 404 when recipe not found by ingredient", async () => {
       const result = await request(app)
       .post("/food/recipe")
       .send({ data: ["eiwbuedoweu"] });
+      // console.log(result, "res");
       expect(result.status).toBe(404);
       expect(typeof result.body).toBe("object");
     },15000);
