@@ -132,7 +132,6 @@ class FoodController{
       })
   }
   static randomRecipe(req,res,next){
-    console.log("yo")
     const combinedRecipesData = []
     // const promiseRecipes = []
     const promiseNutritions = []
@@ -141,7 +140,6 @@ class FoodController{
       method: 'get'
     })
       .then(recipes=>{
-        console.log(recipes.data.recipes[0].analyzedInstructions[0].steps,"oooooooooooooo")
         const shortAccess = recipes.data.recipes
         for(let i = 0; i < shortAccess.length; i++){
           combinedRecipesData.push(shortAccess[i])

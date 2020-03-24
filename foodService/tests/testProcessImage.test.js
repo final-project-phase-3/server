@@ -9,6 +9,7 @@ beforeAll(async () => {
   let user = await User.create({
     username: "kiki",
     email: "kiki@mail.com",
+    password: "kikiaja",
     refrigerator: []
   });
   token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);

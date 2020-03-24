@@ -49,6 +49,7 @@ class userController {
       .then(user => {
         console.log(user);
         if (user) {
+          /* istanbul ignore next */
           res.status(200).json(user);
         } else {
           throw {
