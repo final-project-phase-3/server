@@ -1,3 +1,4 @@
+/* istanbul ignore next */
 if (
   process.env.NODE_ENV == "test" ||
   process.env.NODE_ENV == "development" ||
@@ -38,6 +39,7 @@ mongoose
 app.use("/", routes);
 app.use(errorHandler);
 
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== "test") {
   /* istanbul ignore next */
   server.listen(PORT, () => {

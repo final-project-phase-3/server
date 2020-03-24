@@ -4,7 +4,15 @@ const { comparePassword } = require("../helper/bcrypt");
 
 class userController {
   static login(req, res, next) {
-    const {username, email, password} = req.body
+    let username
+    let email
+    const {input, password} = req.body
+    console.log(password,"<<<<<")
+    if(input.search('.') !== -1 && input.search('@') !== -1){
+      email = input
+    }else{
+      username = input
+    }
     User.findOne({
       $or: [
         { email },
@@ -18,11 +26,13 @@ class userController {
             process.env.JWT_SECRET
           );
           const userData = {
+            _id: exists._id,
             username: exists.username,
             email: exists.email,
             refrigerator: exists.refrigerator,
+            token
           };
-          res.status(200).json({ userData, token })
+          res.status(200).json( {userData} )
         }else{
           if(username === undefined){
             console.log("user")
@@ -39,12 +49,12 @@ class userController {
         }
       })
       .catch(error => {
+        console.log(error)
         next(error);
       });
   }
 
   static getUser(req, res, next) {
-    console.log(req.payload);
     User.findById(req.payload.id)
       .then(user => {
         console.log(user);
@@ -105,11 +115,13 @@ class userController {
           process.env.JWT_SECRET
         );
         const outputUser = {
+          _id: userRegistered._id,
           username: userRegistered.username,
           refrigerator: userRegistered.refrigerator,
-          email: userRegistered.email
+          email: userRegistered.email,
+          token
         };
-        res.status(201).json({ userRegistered: outputUser, token });
+        res.status(201).json({ userRegistered: outputUser });
       })
       .catch(err => {
         next(err);
