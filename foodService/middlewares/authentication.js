@@ -6,7 +6,6 @@ function authentication(req, res, next) {
     const token = req.headers.token;
     try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
-      console.log("bbbbb",payload)
       req.payload = payload;
       next();
     } catch (error) {

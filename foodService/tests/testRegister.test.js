@@ -19,8 +19,8 @@ describe("User Register Route", () => {
     expect(result.status).toBe(201);
     expect(typeof result.body).toBe("object");
     expect(result.body).toHaveProperty("userRegistered");
-    expect(result.body).toHaveProperty("token");
-    expect(typeof result.body.token).toBe("string");
+    expect(result.body.userRegistered).toHaveProperty("token");
+    expect(typeof result.body.userRegistered.token).toBe("string");
     expect(typeof result.body.userRegistered).toBe("object");
     expect(result.body.userRegistered).toHaveProperty("username");
     expect(result.body.userRegistered).toHaveProperty("email");

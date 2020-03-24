@@ -54,14 +54,14 @@ describe("User route", () => {
       const result = await request(app)
         .post(`/user/login`)
         .send({
-          "username": trueUsername,
+          "input": trueUsername,
           "password": truePassword
         })
       expect(result.status).toBe(200);
       expect(typeof result.body).toBe("object");
       expect(result.body).toHaveProperty("userData");
-      expect(result.body).toHaveProperty("token");
-      expect(typeof result.body.token).toBe("string");
+      expect(result.body.userData).toHaveProperty("token");
+      expect(typeof result.body.userData.token).toBe("string");
       expect(typeof result.body.userData).toBe("object");
       expect(result.body.userData).toHaveProperty("username");
       expect(result.body.userData).toHaveProperty("email");
@@ -74,7 +74,7 @@ describe("User route", () => {
       const result = await request(app)
         .post(`/user/login`)
         .send({
-          "email": wrongEmail,
+          "input": wrongEmail,
           "password": truePassword
         })
       expect(result.status).toBe(400);
@@ -86,7 +86,7 @@ describe("User route", () => {
       const result = await request(app)
         .post(`/user/login`)
         .send({
-          "username": wrongUsername,
+          "input": wrongUsername,
           "password": truePassword
         })
       expect(result.status).toBe(400);
@@ -98,7 +98,7 @@ describe("User route", () => {
       const result = await request(app)
         .post(`/user/login`)
         .send({
-          "username": trueUsername,
+          "input": trueUsername,
           "password": wrongPassword
         })
       expect(result.status).toBe(400);
