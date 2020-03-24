@@ -53,7 +53,6 @@ describe("Food routes", () => {
       const result = await request(app)
       .post("/food/recipe")
       .send({ data: ["eiwbuedoweu"] });
-      console.log(result, "res");
       expect(result.status).toBe(404);
       expect(typeof result.body).toBe("object");
     },15000);
@@ -62,6 +61,16 @@ describe("Food routes", () => {
     it("should return status code 200 when get the data from API", async () => {
       const result = await request(app)
       .post("/food/searchRecipe")
+      .send({ data: query });
+      // console.log(result, "res");
+      expect(result.status).toBe(200);
+      expect(typeof result.body).toBe("object");
+    },15000);
+  });
+  describe("GET /food/randomRecipe", () => {
+    it("should return status code 200 when get the data from API", async () => {
+      const result = await request(app)
+      .get("/food/randomRecipe")
       .send({ data: query });
       // console.log(result, "res");
       expect(result.status).toBe(200);
