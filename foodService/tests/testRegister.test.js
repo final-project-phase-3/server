@@ -38,6 +38,19 @@ describe("User Register Route", () => {
     expect(typeof result.body.msg).toBe("string");
     expect(result.body.msg).toBe("Email already registered");
   });
+  it("should return status code 400 when registering a registered username", async () => {
+    const result = await request(app)
+      .post("/user/register")
+      .send({
+        username: "lili",
+        email: "lili1@mail.com",
+        password: "secret"
+      });
+    expect(result.status).toBe(400);
+    expect(result.body).toHaveProperty("msg");
+    expect(typeof result.body.msg).toBe("string");
+    expect(result.body.msg).toBe("Username is taken!");
+  });
   it("should return status code 400 when username is not set", async () => {
     const result = await request(app)
       .post("/user/register")
@@ -58,7 +71,7 @@ describe("User Register Route", () => {
     const result = await request(app)
       .post("/user/register")
       .send({
-        username: "lili",
+        username: "lili123",
         password: "mamama"
       });
     expect(result.status).toBe(500);
@@ -73,7 +86,7 @@ describe("User Register Route", () => {
     const result = await request(app)
       .post("/user/register")
       .send({
-        username: "lili",
+        username: "lili1234",
         password: "mamama",
         email: "mamammama"
       });
@@ -90,7 +103,7 @@ describe("User Register Route", () => {
     const result = await request(app)
       .post("/user/register")
       .send({
-        username: "lili",
+        username: "lili12345",
         email: "lili1@mail.com",
         password: ""
       });
@@ -107,7 +120,7 @@ describe("User Register Route", () => {
     const result = await request(app)
       .post("/user/register")
       .send({
-        username: "lili",
+        username: "lili123456",
         password: "ma",
         email: "lili123@mail.com"
       });
