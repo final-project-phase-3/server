@@ -1,48 +1,29 @@
 const request = require("supertest");
 const app = require("../app");
+const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-
-// const wrongIdToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNzg3OWE3M2FmISlfIyErIykkI2UyODNhMGZmZmNjYSIsImlhdCI6MTU4NDk1NDk4Mn0.77ajBdChT6xRif7-P5eSQAzoVl7PohyCn-tBFOxRf9U"
+const trueEmail = "kevin@mail.com"
+const wrongEmail = "gaknemu@mail.com"
+const trueUsername = "kevin"
+const wrongUsername = "salahalamat"
+const truePassword = "cocolaja"
+const wrongPassword = "cocolsalah"
 const wrongtoken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..vDZ90GAsiI3xGrV2Yed2Rb3TTzX5Nowz8A7-eCIPGj4";
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNzg5ODMzZmEyNDE3MmQ0MTBmOTRhYSIsImlhdCI6MTU4NDk1NDk4Mn0.eqJxExDEzCsGfLZ1HJpDjyUzn0_ZVeSOWGC9m88BnJE"
 jest.mock("google-auth-library");
-const { OAuth2Client } = require('google-auth-library');
-const setCredentialsMock = jest.fn();
-const getAccessTokenMock = jest.fn();
-OAuth2Client.mockImplementation(() => {
-  return {
-    setCredentials: setCredentialsMock,
-    getAccessToken: getAccessTokenMock
-  }
-});
 let wrongIdToken = jwt.sign({ id: '5e7481e312af324e6a4ce406'}, process.env.JWT_SECRET);
+// let newtoken = jwt.sign({ id: '5e7a0a07dc8e032b4c3b0e74'}, process.env.JWT_SECRET);
+beforeAll(() => {
+  User.create({
+    username: trueUsername,
+    password: truePassword,
+    email: trueEmail,
+    refrigerator: []
+  });
+});
 describe("User route", () => {
-  describe("POST /user", () => {
-    // console.log(new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, ""))
-    // it("should return status code 400 when google payload is correct", async () => {
-    //   console.log("testttt")
-      
-    //   const oAuth2Client = new OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, "");
-    //   oAuth2Client.setCredentials({ userData: {
-    //     name: "cool",
-    //     email: "cool@gmail.com"
-    //   }});
-    //   console.log(oAuth2Client)
-      // const respData = {
-      //   name: "",
-      //   email: ""
-      // }
-      // const result = await request(app)
-      //   .get(`/user/login`)
-      //   .send({
-      //   });
-
-
-    
-
-    // });
-
+  describe(" GET /user", () => {
     it("should return status code 403 when token is not set", async () => {
       const result = await request(app)
         .get(`/user`)
@@ -67,13 +48,68 @@ describe("User route", () => {
       expect(result.status).toBe(404);
       expect(typeof result.body).toBe("object");
     })
-    it("should return status code 200 when user found", async () => {
+  })
+  describe(" POST /user", () => {
+    it("should return status code 200 when password is true", async () => {
       const result = await request(app)
-        .get(`/user`)
-        .set("token", token)
-      expect(typeof result).toBe("object");
+        .post(`/user/login`)
+        .send({
+          "username": trueUsername,
+          "password": truePassword
+        })
       expect(result.status).toBe(200);
       expect(typeof result.body).toBe("object");
-    })
+      expect(result.body).toHaveProperty("userData");
+      expect(result.body).toHaveProperty("token");
+      expect(typeof result.body.token).toBe("string");
+      expect(typeof result.body.userData).toBe("object");
+      expect(result.body.userData).toHaveProperty("username");
+      expect(result.body.userData).toHaveProperty("email");
+      expect(result.body.userData).toHaveProperty("refrigerator");
+      expect(result.body.userData.username).toBe("kevin");
+      expect(result.body.userData.email).toBe("kevin@mail.com");
+      expect(result.body.userData.refrigerator.length).toBe(0);
+    });
+    it("should return status code 400 when email is wrong", async () => {
+      const result = await request(app)
+        .post(`/user/login`)
+        .send({
+          "email": wrongEmail,
+          "password": truePassword
+        })
+      expect(result.status).toBe(400);
+      expect(result.body).toHaveProperty("msg");
+      expect(typeof result.body.msg).toBe("string");
+      expect(result.body.msg).toBe("Email or Password is wrong");
+    });
+    it("should return status code 400 when username is wrong", async () => {
+      const result = await request(app)
+        .post(`/user/login`)
+        .send({
+          "username": wrongUsername,
+          "password": truePassword
+        })
+      expect(result.status).toBe(400);
+      expect(result.body).toHaveProperty("msg");
+      expect(typeof result.body.msg).toBe("string");
+      expect(result.body.msg).toBe("Username or Password is wrong");
+    });
+    it("should return status code 400 when password is wrong", async () => {
+      const result = await request(app)
+        .post(`/user/login`)
+        .send({
+          "username": trueUsername,
+          "password": wrongPassword
+        })
+      expect(result.status).toBe(400);
+      expect(result.body).toHaveProperty("msg");
+      expect(typeof result.body.msg).toBe("string");
+      expect(result.body.msg).toBe("Username or Password is wrong");
+    });
+    
   })
+});
+
+afterAll(() => {
+  User.deleteMany({})
 });

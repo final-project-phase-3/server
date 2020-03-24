@@ -1,45 +1,41 @@
 const User = require("../models/User");
 const { generateToken } = require("../helper/jwt");
-const { OAuth2Client } = require("google-auth-library");
+const { comparePassword } = require("../helper/bcrypt");
 
 class userController {
-  /* istanbul ignore next */
-  static loginGoogle(req, res, next) {
-    const client = new OAuth2Client(process.env.CLIENT_ID);
-    let username;
-    let email;
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-        idToken: req.body.token,
-        audience: process.env.CLIENT_ID
-      });
-      const payload = ticket.getPayload();
-      return payload;
-    }
-    verify()
-      .then(data => {
-        username = data.name;
-        email = data.email;
-        return User.findOne({
-          email: data.email
-        });
-      })
+  static login(req, res, next) {
+    const {username, email, password} = req.body
+    User.findOne({
+      $or: [
+        { email },
+        { username }
+      ]
+    })
       .then(exists => {
-        if (exists == null) {
-          User.insertOne({
-            username,
-            email,
-            refrigerator: []
-          });
-        } else {
-          let obj = {
-            id: exists._id,
+        if(exists && comparePassword(password,exists.password)){
+          const token = generateToken(
+            { id: exists._id },
+            process.env.JWT_SECRET
+          );
+          const userData = {
             username: exists.username,
             email: exists.email,
-            refrigerator: exists.refrigerator
+            refrigerator: exists.refrigerator,
           };
-          let token = generateToken(obj, process.env.JWT_SECRET);
-          res.status(200).json({ accessToken: token });
+          res.status(200).json({ userData, token })
+        }else{
+          if(username === undefined){
+            console.log("user")
+            throw {
+              status: 400,
+              message: "Email or Password is wrong"
+            }
+          }else{
+            throw {
+              status: 400,
+              message: "Username or Password is wrong"
+            }
+          }
         }
       })
       .catch(error => {
@@ -53,6 +49,7 @@ class userController {
       .then(user => {
         console.log(user);
         if (user) {
+          /* istanbul ignore next */
           res.status(200).json(user);
         } else {
           throw {

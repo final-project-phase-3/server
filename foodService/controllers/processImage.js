@@ -63,11 +63,11 @@ class ProcessImageController {
               })
             }))
           }else {
-            const error = {
+          /* istanbul ignore next */
+            throw {
               status:400,
               message:"can't read your image"
             }
-            next(error)
           }
         })
         // if((data.status.type === 'success' || data.result.tags.length === 0)){
@@ -77,11 +77,11 @@ class ProcessImageController {
           // }
         })
         .catch(err => {
-          const error = {
+          /* istanbul ignore next */
+          throw {
             status:400,
             message:"can't read your image"
           }
-          next(error)
       })
   }
 }

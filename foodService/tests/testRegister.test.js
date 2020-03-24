@@ -26,7 +26,7 @@ describe("User Register Route", () => {
     expect(result.body.userRegistered).toHaveProperty("email");
     expect(result.body.userRegistered).toHaveProperty("refrigerator");
     expect(result.body.userRegistered.username).toBe("lili");
-    expect(result.body.userRegistered.username).toBe("lili");
+    expect(result.body.userRegistered.email).toBe("lili@mail.com");
     expect(result.body.userRegistered.refrigerator.length).toBe(0);
   });
   it("should return status code 400 when registering a registered email", async () => {
