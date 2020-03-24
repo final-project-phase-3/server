@@ -53,7 +53,6 @@ class FoodController{
           combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
           combinedRecipesData[i].readyInMinutes = foodNutritions[i].data.readyInMinutes
         }
-        console.log(combinedRecipesData,"<<<result");
         if(combinedRecipesData.length === 0){
           throw {
             status:404,
@@ -116,7 +115,7 @@ class FoodController{
           // console.log(foodNutritions[i].data.nutrition.ingredients,"from nutri")
           // console.log(foodNutritions[i].data.extendedIngredients,"from extend")
           combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
-          combinedRecipesData[i].ingredients = foodNutritions[i].data.extendedIngredients          
+          combinedRecipesData[i].ingredients = foodNutritions[i].data.extendedIngredients        
         }
         // console.log(combinedRecipesData,"<<<result");
         if(combinedRecipesData.length === 0){
@@ -129,6 +128,51 @@ class FoodController{
       })
       .catch(error=>{
         // console.log(error)
+        next(error)
+      })
+  }
+  static randomRecipe(req,res,next){
+    console.log("yo")
+    const combinedRecipesData = []
+    // const promiseRecipes = []
+    const promiseNutritions = []
+    axios({
+      url: `${baseUrl}random?includeNutrition=true&number=1&apiKey=${api_key}`,
+      method: 'get'
+    })
+      .then(recipes=>{
+        console.log(recipes.data.recipes[0].analyzedInstructions[0].steps,"oooooooooooooo")
+        const shortAccess = recipes.data.recipes
+        for(let i = 0; i < shortAccess.length; i++){
+          combinedRecipesData.push(shortAccess[i])
+          combinedRecipesData[i].cookingSteps = shortAccess[i].analyzedInstructions[0].steps;
+          combinedRecipesData[i].ingredients = shortAccess[i].extendedIngredients        
+
+          // promiseRecipes.push(
+          //     axios({
+          //         url: `${baseUrl}${shortAccess[i].id}/analyzedInstructions?apiKey=${api_key}`,
+          //         method: "get"
+          //       })
+          //     );
+          promiseNutritions.push(
+            axios({
+              url: `${baseUrl}${shortAccess[i].id}/information?includeNutrition=true&apiKey=${api_key}`,
+              method: 'get'
+            })
+          );
+        }
+        return Promise.all(promiseNutritions)
+      })
+      .then(foodNutritions=>{
+        for(let i = 0; i < foodNutritions.length; i++) {
+          // console.log(foodNutritions[i].data.nutrition.ingredients,"from nutri")
+          // console.log(foodNutritions[i].data.extendedIngredients,"from extend")
+          combinedRecipesData[i].nutritions = foodNutritions[i].data.nutrition.nutrients
+        }
+        res.status(200).json({ payload: combinedRecipesData });
+      })
+      .catch(error=>{
+        /* istanbul ignore next */
         next(error)
       })
   }
