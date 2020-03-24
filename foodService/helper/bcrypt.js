@@ -6,4 +6,9 @@ function hashPassword(plainPassword) {
   return hashed;
 }
 
-module.exports = { hashPassword };
+function comparePassword(plainPassword,hashedPassword) {
+  const compared = bcrypt.compareSync(plainPassword, hashedPassword);
+  return compared;
+}
+
+module.exports = { hashPassword,comparePassword };

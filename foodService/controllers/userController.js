@@ -1,14 +1,42 @@
 const User = require("../models/User");
 const { generateToken } = require("../helper/jwt");
-const { OAuth2Client } = require("google-auth-library");
+const { comparePassword } = require("../helper/bcrypt");
 
 class userController {
   static login(req, res, next) {
-    console.log(req.body)
-    const {username, password} = req.body
-    User.findOne({username},"password")
+    const {username, email, password} = req.body
+    User.findOne({
+      $or: [
+        { email },
+        { username }
+      ]
+    })
       .then(exists => {
-        console.log(exists)
+        if(exists && comparePassword(password,exists.password)){
+          const token = generateToken(
+            { id: exists._id },
+            process.env.JWT_SECRET
+          );
+          const userData = {
+            username: exists.username,
+            email: exists.email,
+            refrigerator: exists.refrigerator,
+          };
+          res.status(200).json({ userData, token })
+        }else{
+          if(username === undefined){
+            console.log("user")
+            throw {
+              status: 400,
+              message: "Email or Password is wrong"
+            }
+          }else{
+            throw {
+              status: 400,
+              message: "Username or Password is wrong"
+            }
+          }
+        }
       })
       .catch(error => {
         next(error);
