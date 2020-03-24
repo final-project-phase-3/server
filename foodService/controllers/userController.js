@@ -87,6 +87,13 @@ class userController {
               };
             }
           }
+          return User.findOne({ username: req.body.username });
+        }
+      })
+      .then(usernameFound => {
+        if (usernameFound) {
+          throw { status: 400, message: "Username is taken!" };
+        } else {
           return User.create({
             username: req.body.username,
             password: req.body.password,
