@@ -10,7 +10,7 @@ const truePassword = "cocolaja"
 const wrongPassword = "cocolsalah"
 const wrongtoken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..vDZ90GAsiI3xGrV2Yed2Rb3TTzX5Nowz8A7-eCIPGj4";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNzg5ODMzZmEyNDE3MmQ0MTBmOTRhYSIsImlhdCI6MTU4NDk1NDk4Mn0.eqJxExDEzCsGfLZ1HJpDjyUzn0_ZVeSOWGC9m88BnJE"
+// const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlNzg5ODMzZmEyNDE3MmQ0MTBmOTRhYSIsImlhdCI6MTU4NDk1NDk4Mn0.eqJxExDEzCsGfLZ1HJpDjyUzn0_ZVeSOWGC9m88BnJE"
 jest.mock("google-auth-library");
 let wrongIdToken = jwt.sign({ id: '5e7481e312af324e6a4ce406'}, process.env.JWT_SECRET);
 // let newtoken = jwt.sign({ id: '5e7a0a07dc8e032b4c3b0e74'}, process.env.JWT_SECRET);

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const { generateToken } = require("../helper/jwt");
 const { comparePassword } = require("../helper/bcrypt");
 
+
 class userController {
   static login(req, res, next) {
     let username
