@@ -12,6 +12,7 @@ class ProcessImageController {
 
     const { imageUrl } = req.body
     console.log(imageUrl,"aaaaaaaa")
+    const fileName = imageUrl.substring(imageUrl.lastIndexOf('/')+1);
     if(!imageUrl){
       const err = {
         status:400,
@@ -19,7 +20,7 @@ class ProcessImageController {
       }
       next(err)
     }
-    const sharpenImage = `https://coolkas.imgix.net/${fileName}?sharp=100&vib=50&sat=25`
+    const sharpenImage = `https://coolkas.imgix.net/${fileName}?sharp=100&sat=-100&con=30`
 
     const auth = {
       auth:{
@@ -44,81 +45,82 @@ class ProcessImageController {
           }
           next(err)
         }
-        textApi.concepts({
-          text:String(arrayTag),
-          language:"en"
-        },async (error,response) => {
-          console.log(arrayTag)
-          if (error === null) {
-            let arrayKey = Object.keys(response.concepts)
-            console.log(arrayKey)
-            let arrayResult = []
-            for(let i = 0 ; i < arrayKey.length; i++){
-              console.log(response.concepts[arrayKey[i]] )
-              arrayResult = arrayResult.concat(response.concepts[arrayKey[i]].surfaceForms)
-            }
-            
-            // arrayResult.sort((a,b) => {
-            //   return b.score - a.score
-            // });
-            let tags = []
-            arrayResult.forEach(val => {
-              tags.push(val.string)
-            })
-            console.log(arrayResult)
-            try {
+
+        res.status(200).json({
+          imageUrl,
+          // concept: concept.substring(concept.lastIndexOf('/')+1),
+          name: arrayTag[0] || '',
+          tags:arrayTag,
+          msg: "Success"
+        })
+        // textApi.concepts({
+        //   text:String(arrayTag),
+        //   language:"en"
+        // },async (error,response) => {
+        //   console.log(arrayTag)
+        //   if (error === null) {
+        //     let arrayKey = Object.keys(response.concepts)
+        //     console.log(arrayKey)
+        //     let arrayResult = []
+        //     for(let i = 0 ; i < arrayKey.length; i++){
+        //       console.log(response.concepts[arrayKey[i]] )
+        //       arrayResult = arrayResult.concat(response.concepts[arrayKey[i]].surfaceForms)
+        //     }
+           
+        //     // arrayResult.sort((a,b) => {
+        //     //   return b.score - a.score
+        //     // });
+        //     // let tags = []
+        //     // arrayResult.forEach(val => {
+        //     //   tags.push(val.string)
+        //     // })
+        //     // console.log(arrayResult)
+        //     // try {
               
-              console.log(tags)
-              const razorResult = await axios(
-                {
-                  url:"http://api.textrazor.com",
-                  method:"GET",
-                  headers:{
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                    'X-TextRazor-Key': process.env.RAZOR_KEY
-                  },
-                  data:qs.stringify({
-                    text: arrayTag.join(" "),
-                    extractors:"entities",
-                    languageOverride:"eng"
-                  })
-                }
-              )
-              const razorTemp = razorResult.data.response.entities || []
-              console.log(razorTemp)
-              let newtags = []
-              razorTemp.forEach(el => {
-                newtags.push(el.matchedText)
-              })
-              res.status(200).json({
-                imageUrl,
-                // concept: concept.substring(concept.lastIndexOf('/')+1),
-                name: newtags[0] || '',
-                tags:newtags,
-                msg: "Success"
-              })
-            } catch (error) {
-                console.log(error)
-            }
+        //     //   console.log(tags)
+        //     //   const razorResult = await axios(
+        //     //     {
+        //     //       url:"http://api.textrazor.com",
+        //     //       method:"GET",
+        //     //       headers:{
+        //     //         'Content-Type': 'application/x-www-form-urlencoded',
+        //     //         'X-TextRazor-Key': process.env.RAZOR_KEY
+        //     //       },
+        //     //       data:qs.stringify({
+        //     //         text: arrayTag.join(" "),
+        //     //         extractors:"entities",
+        //     //         languageOverride:"eng"
+        //     //       })
+        //     //     }
+        //     //   )
+        //     //   const razorTemp = razorResult.data.response.entities || []
+        //     //   console.log(razorResult.data,"bbudi")
+        //     //   let newtags = []
+        //     //   razorTemp.forEach(el => {
+        //     //     newtags.push(el.matchedText)
+        //     //   })
+        //     // } catch (error) {
+        //     //     console.log(error)
+        //     // }
 
            
-            // textApi.hashtags({
-            //   text:String(arrayTag),
-            //   language:"en"
-            // },((err,resp) => {
-            //   let tags = resp.hashtags.map(sf => {
-            //     return sf.slice(1)
-            //   })
+        //     // textApi.hashtags({
+        //     //   text:String(arrayTag),
+        //     //   language:"en"
+        //     // },((err,resp) => {
+        //     //   let tags = resp.hashtags.map(sf => {
+        //     //     return sf.slice(1)
+        //     //   })
               
-            // }))
-          }else {
-          /* istanbul ignore next */
-            throw {
-              status:400,
-              message:"can't read your image"
-            }
-          }
-        })
+        //     // }))
+        //   }else {
+        //     const error = {
+        //       status:400,
+        //       message:"can't read your image"
+        //     }
+        //     next(error)
+        //   }
+        // })
       })
       .catch(err => {
         next(err)
